@@ -33,7 +33,18 @@
       "size": 685797,
       "added": "2026-11-07T13:03:49Z",
       "request": "Frankenstein"
+    },
+    {
+      "id": "se:anonymous/beowulf/john-lesslie-hall",
+      "title": "Beowulf",
+      "author": "Unknown",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/anonymous/beowulf/john-lesslie-hall",
+      "file": "books/unknown_beowulf.epub",
+      "size": 392312,
+      "added": "2026-11-07T13:04:25Z",
+      "request": "Beowulf"
     }
   ],
-  "updated": "2026-11-07T13:03:49Z"
+  "updated": "2026-11-07T13:04:25Z"
 }

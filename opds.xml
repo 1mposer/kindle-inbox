@@ -2,9 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-07T13:03:49Z</updated>
+  <updated>2026-11-07T13:04:25Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <entry>
+    <title>Beowulf</title>
+    <id>urn:kindle-inbox:se:anonymous/beowulf/john-lesslie-hall</id>
+    <updated>2026-11-07T13:04:25Z</updated>
+    <author><name>Unknown</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/anonymous/beowulf/john-lesslie-hall</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/unknown_beowulf.epub"/>
+  </entry>
   <entry>
     <title>Frankenstein</title>
     <id>urn:kindle-inbox:se:mary-shelley/frankenstein</id>
