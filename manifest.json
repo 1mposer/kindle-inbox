@@ -1,1 +1,17 @@
-{"version": 1, "books": []}
+{
+  "version": 1,
+  "books": [
+    {
+      "id": "se:oscar-wilde/the-picture-of-dorian-gray",
+      "title": "The Picture of Dorian Gray",
+      "author": "Oscar Wilde",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/oscar-wilde/the-picture-of-dorian-gray",
+      "file": "books/oscar-wilde_the-picture-of-dorian-gray.epub",
+      "size": 634177,
+      "added": "2026-11-07T19:44:14Z",
+      "request": "The Picture of Dorian Gray"
+    }
+  ],
+  "updated": "2026-11-07T19:44:14Z"
+}

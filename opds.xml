@@ -2,8 +2,15 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-07T13:18:58Z</updated>
+  <updated>2026-11-07T19:44:14Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
-
+  <entry>
+    <title>The Picture of Dorian Gray</title>
+    <id>urn:kindle-inbox:se:oscar-wilde/the-picture-of-dorian-gray</id>
+    <updated>2026-11-07T19:44:14Z</updated>
+    <author><name>Oscar Wilde</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/oscar-wilde/the-picture-of-dorian-gray</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/oscar-wilde_the-picture-of-dorian-gray.epub"/>
+  </entry>
 </feed>
