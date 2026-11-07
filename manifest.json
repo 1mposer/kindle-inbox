@@ -55,7 +55,29 @@
       "size": 650898,
       "added": "2026-11-07T13:15:23Z",
       "request": "Hamlet"
+    },
+    {
+      "id": "se:homer/the-odyssey/william-cullen-bryant",
+      "title": "The Odyssey",
+      "author": "Homer",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/homer/the-odyssey/william-cullen-bryant",
+      "file": "books/homer_the-odyssey.epub",
+      "size": 976071,
+      "added": "2026-11-07T13:17:29Z",
+      "request": "The Odyssey"
+    },
+    {
+      "id": "se:jane-austen/emma",
+      "title": "Emma",
+      "author": "Jane Austen",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/jane-austen/emma",
+      "file": "books/jane-austen_emma.epub",
+      "size": 798849,
+      "added": "2026-11-07T13:17:30Z",
+      "request": "Emma Jane Austen"
     }
   ],
-  "updated": "2026-11-07T13:15:23Z"
+  "updated": "2026-11-07T13:17:30Z"
 }
