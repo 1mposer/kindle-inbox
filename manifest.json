@@ -33,7 +33,29 @@
       "size": 831959,
       "added": "2026-11-07T13:13:23Z",
       "request": "Pride and Prejudice"
+    },
+    {
+      "id": "se:herman-melville/moby-dick",
+      "title": "Moby Dick",
+      "author": "Herman Melville",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/herman-melville/moby-dick",
+      "file": "books/herman-melville_moby-dick.epub",
+      "size": 1165503,
+      "added": "2026-11-07T13:15:22Z",
+      "request": "Moby Dick"
+    },
+    {
+      "id": "se:william-shakespeare/hamlet",
+      "title": "Hamlet",
+      "author": "William Shakespeare",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/william-shakespeare/hamlet",
+      "file": "books/william-shakespeare_hamlet.epub",
+      "size": 650898,
+      "added": "2026-11-07T13:15:23Z",
+      "request": "Hamlet"
     }
   ],
-  "updated": "2026-11-07T13:13:23Z"
+  "updated": "2026-11-07T13:15:23Z"
 }

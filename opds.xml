@@ -2,9 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-07T13:13:23Z</updated>
+  <updated>2026-11-07T13:15:23Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <entry>
+    <title>Hamlet</title>
+    <id>urn:kindle-inbox:se:william-shakespeare/hamlet</id>
+    <updated>2026-11-07T13:15:23Z</updated>
+    <author><name>William Shakespeare</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/william-shakespeare/hamlet</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/william-shakespeare_hamlet.epub"/>
+  </entry>
+  <entry>
+    <title>Moby Dick</title>
+    <id>urn:kindle-inbox:se:herman-melville/moby-dick</id>
+    <updated>2026-11-07T13:15:22Z</updated>
+    <author><name>Herman Melville</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/herman-melville/moby-dick</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/herman-melville_moby-dick.epub"/>
+  </entry>
   <entry>
     <title>Pride and Prejudice</title>
     <id>urn:kindle-inbox:se:jane-austen/pride-and-prejudice</id>
