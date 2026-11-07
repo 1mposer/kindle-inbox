@@ -9,6 +9,7 @@ Usage:
   fetch_book.py add "<request text>"   find, download, add to manifest, rebuild site
   fetch_book.py build                  rebuild manifest-derived files (opds.xml, index.html)
   fetch_book.py find "<request text>"  print the best match only, download nothing
+  fetch_book.py sweep issues.json      process every open request issue (from gh issue list)
 
 Standard library only. Writes a short result summary to $GITHUB_OUTPUT when set.
 """
@@ -185,9 +186,10 @@ def add(request_text, requester=""):
         return {"status": "error", "message": "The request was empty."}
     match, errors = best_match(query)
     if not match:
+        if errors:  # a source was down: do not claim "not found"
+            return {"status": "error", "query": query,
+                    "message": f'Could not search for "{query}" right now (' + "; ".join(errors) + ")."}
         msg = f'No free edition found for "{query}" on Standard Ebooks or Project Gutenberg.'
-        if errors:
-            msg += " (" + "; ".join(errors) + ")"
         return {"status": "notfound", "message": msg, "query": query}
 
     if match["source"] == "standardebooks":
@@ -277,15 +279,37 @@ li{{margin:.4rem 0}} span{{color:#666;font-size:.9em}} a{{color:#222}}</style></
         f.write(page)
 
 
-def write_output(result):
+def request_text(issue):
+    body = issue.get("body") or ""
+    return body if re.search(r"###\s*Book title", body, re.I) else (issue.get("title") or "")
+
+
+def sweep(issues_path):
+    """Process every open request issue, so a cancelled queued run loses nothing."""
+    with open(issues_path, encoding="utf-8") as f:
+        issues = json.load(f)
+    results = []
+    for issue in sorted(issues, key=lambda i: i["number"]):
+        try:
+            r = add(request_text(issue))
+        except Exception as e:  # network trouble etc.: leave the issue open for the next run
+            r = {"status": "error", "message": f"Temporary error: {e}. Reopen or send again to retry."}
+        results.append({
+            "number": issue["number"],
+            "status": r["status"],
+            "message": r["message"],
+            "source_url": (r.get("book") or {}).get("source_url", ""),
+        })
+    return results
+
+
+def write_output(results):
+    summary = ", ".join(f"{r['status']}" for r in results) or "nothing"
     path = os.environ.get("GITHUB_OUTPUT")
-    if not path:
-        return
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(f"status={result['status']}\n")
-        f.write("message<<__EOF__\n" + result["message"] + "\n__EOF__\n")
-        b = result.get("book")
-        f.write(f"source_url={b['source_url'] if b else ''}\n")
+    if path:
+        with open(path, "a", encoding="utf-8") as f:
+            f.write("results=" + json.dumps(results, ensure_ascii=True) + "\n")
+            f.write("summary=" + re.sub(r"[^a-z, ]", "", summary) + "\n")
 
 
 def main(argv):
@@ -298,9 +322,15 @@ def main(argv):
         print(json.dumps({"query": q, "match": match, "errors": errors}, indent=2))
         return 0
     if len(argv) >= 3 and argv[1] == "add":
-        result = add(argv[2])
-        print(json.dumps(result, indent=2))
-        write_output(result)
+        r = add(argv[2])
+        print(json.dumps(r, indent=2))
+        write_output([{"number": 0, "status": r["status"], "message": r["message"],
+                       "source_url": (r.get("book") or {}).get("source_url", "")}])
+        return 0
+    if len(argv) >= 3 and argv[1] == "sweep":
+        results = sweep(argv[2])
+        print(json.dumps(results, indent=2))
+        write_output(results)
         return 0
     print(__doc__)
     return 2

@@ -14,7 +14,8 @@ From the GitHub app or a browser, open
 type the title, submit. A plain issue whose title is the book title also works.
 
 The Action replies on the issue within about a minute and closes it. Only the
-repository owner's issues are processed.
+repository owner's issues are processed. If a source is down, the issue stays
+open and the next request retries it.
 
 ## On the Kindle
 
@@ -26,8 +27,8 @@ Books land in `<home folder>/Inbox`. The plugin checks:
 - every 30 minutes while awake
 - on demand: *Tools > Book inbox > Check now*
 
-Nothing downloads while the Kindle is asleep: the CPU is suspended and KOReader
-turns Wi-Fi off. Wake it up and the book arrives within a minute.
+Nothing downloads while the Kindle is asleep: the CPU is suspended and Wi-Fi
+is down. Wake it up and the book arrives within about a minute.
 
 You can also browse the feed in KOReader's OPDS catalog:
 `https://1mposer.github.io/kindle-inbox/opds.xml`

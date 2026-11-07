@@ -18,6 +18,8 @@ permissions:
   pages: write
   id-token: write
 
+# Runs are serialised. GitHub keeps only one queued run, so every run sweeps
+# all open request issues instead of trusting the issue that triggered it.
 concurrency:
   group: inbox
   cancel-in-progress: false
@@ -28,46 +30,47 @@ jobs:
     if: github.event_name != 'issues' || github.event.issue.user.login == github.repository_owner
     runs-on: ubuntu-latest
     outputs:
-      status: ${{ steps.add.outputs.status }}
-      message: ${{ steps.add.outputs.message }}
-      source_url: ${{ steps.add.outputs.source_url }}
+      results: ${{ steps.add.outputs.results }}
+      summary: ${{ steps.add.outputs.summary }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: main  # runs are serialised; always build on the newest inbox
-      - name: Find and add the book
+          ref: main
+      - name: Find and add books
         id: add
         if: github.event_name != 'push'
         env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
           INPUT_TITLE: ${{ github.event.inputs.title }}
         run: |
           if [ -n "$INPUT_TITLE" ]; then
-            request="$INPUT_TITLE"
-          elif printf '%s' "$ISSUE_BODY" | grep -qi '### Book title'; then
-            request="$ISSUE_BODY"
+            python3 -I scripts/fetch_book.py add "$INPUT_TITLE"
           else
-            request="$ISSUE_TITLE"
+            gh issue list --repo "$REPO" --state open --author "$OWNER" --limit 20 \
+              --json number,title,body > "$RUNNER_TEMP/issues.json"
+            python3 -I scripts/fetch_book.py sweep "$RUNNER_TEMP/issues.json"
           fi
-          python3 -I scripts/fetch_book.py add "$request"
       - name: Rebuild feeds
         if: github.event_name == 'push'
         run: python3 -I scripts/fetch_book.py build
       - name: Commit
+        env:
+          SUMMARY: ${{ steps.add.outputs.summary }}
         run: |
           git config user.name "kindle-inbox"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A books manifest.json opds.xml index.html
           if ! git diff --cached --quiet; then
-            git commit -m "inbox: ${{ steps.add.outputs.status || 'rebuild' }}"
+            git commit -m "inbox: ${SUMMARY:-rebuild}"
             git pull --rebase -q origin main
             git push
           fi
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp -r books manifest.json opds.xml index.html _site/ 2>/dev/null || true
+          cp -r books manifest.json opds.xml index.html _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v5
         with:
@@ -92,22 +95,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.issue.number }}
-          STATUS: ${{ needs.fetch.outputs.status }}
-          MESSAGE: ${{ needs.fetch.outputs.message }}
-          SOURCE: ${{ needs.fetch.outputs.source_url }}
+          RESULTS: ${{ needs.fetch.outputs.results }}
           DEPLOY: ${{ needs.deploy.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EVENT_ISSUE: ${{ github.event.issue.number }}
         run: |
-          case "$STATUS" in
-            added)     body="$MESSAGE"$'\n\n'"Source: $SOURCE"$'\n\n'"It will download to the Kindle's Inbox shelf the next time the Kindle wakes up on Wi-Fi.";;
-            duplicate) body="$MESSAGE";;
-            "")        body="Something went wrong. See the workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";;
-            *)         body="$MESSAGE"$'\n\n'"Try the exact title, or add the author.";;
-          esac
-          if [ "$DEPLOY" != "success" ] && [ "$STATUS" = "added" ]; then
-            body="$body"$'\n\n'"(The feed did not deploy; it will go out with the next request.)"
+          if [ -z "$RESULTS" ] || [ "$RESULTS" = "[]" ]; then
+            gh issue comment "$EVENT_ISSUE" --repo "$REPO" --body "Something went wrong. See $RUN_URL"
+            exit 0
           fi
-          gh issue comment "$NUMBER" --repo "$REPO" --body "$body"
-          if [ "$STATUS" = "added" ] || [ "$STATUS" = "duplicate" ]; then
-            gh issue close "$NUMBER" --repo "$REPO" --reason completed
-          fi
+          printf '%s' "$RESULTS" | jq -c '.[]' | while read -r r; do
+            n=$(jq -r .number <<<"$r"); status=$(jq -r .status <<<"$r")
+            msg=$(jq -r .message <<<"$r"); src=$(jq -r .source_url <<<"$r")
+            case "$status" in
+              added)
+                body="$msg"$'\n\n'"Source: $src"$'\n\n'"It downloads to the Kindle's Inbox shelf the next time the Kindle is awake on Wi-Fi."
+                [ "$DEPLOY" = "success" ] || body="$body"$'\n\n'"(The feed did not deploy; it goes out with the next request.)"
+                gh issue comment "$n" --repo "$REPO" --body "$body"
+                gh issue close "$n" --repo "$REPO" --reason completed ;;
+              duplicate)
+                gh issue comment "$n" --repo "$REPO" --body "$msg"
+                gh issue close "$n" --repo "$REPO" --reason completed ;;
+              notfound)
+                gh issue comment "$n" --repo "$REPO" --body "$msg"$'\n\n'"Only public-domain books are available. Try the exact title, or add the author."
+                gh issue close "$n" --repo "$REPO" --reason "not planned" ;;
+              *)
+                gh issue comment "$n" --repo "$REPO" --body "$msg"$'\n\n'"Left open: the next request retries it. $RUN_URL" ;;
+            esac
+          done
