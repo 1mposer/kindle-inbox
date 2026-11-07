@@ -22,7 +22,18 @@
       "size": 1206096,
       "added": "2026-11-07T13:01:39Z",
       "request": "Autobiography of Andrew Carnegie"
+    },
+    {
+      "id": "se:mary-shelley/frankenstein",
+      "title": "Frankenstein",
+      "author": "Mary Shelley",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/mary-shelley/frankenstein",
+      "file": "books/mary-shelley_frankenstein.epub",
+      "size": 685797,
+      "added": "2026-11-07T13:03:49Z",
+      "request": "Frankenstein"
     }
   ],
-  "updated": "2026-11-07T13:01:39Z"
+  "updated": "2026-11-07T13:03:49Z"
 }
