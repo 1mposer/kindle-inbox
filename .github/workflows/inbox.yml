@@ -32,7 +32,7 @@ jobs:
       message: ${{ steps.add.outputs.message }}
       source_url: ${{ steps.add.outputs.source_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Find and add the book
         id: add
         if: github.event_name != 'push'
@@ -66,7 +66,7 @@ jobs:
           mkdir -p _site
           cp -r books manifest.json opds.xml index.html _site/ 2>/dev/null || true
           touch _site/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -78,7 +78,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   report:
     needs: [fetch, deploy]
