@@ -99,11 +99,14 @@ jobs:
           DEPLOY: ${{ needs.deploy.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           EVENT_ISSUE: ${{ github.event.issue.number }}
+          FETCH: ${{ needs.fetch.result }}
         run: |
-          if [ -z "$RESULTS" ] || [ "$RESULTS" = "[]" ]; then
-            gh issue comment "$EVENT_ISSUE" --repo "$REPO" --body "Something went wrong. See $RUN_URL"
+          if [ "$FETCH" != "success" ]; then
+            gh issue comment "$EVENT_ISSUE" --repo "$REPO" --body "Something went wrong. Reopen the issue to retry. $RUN_URL"
             exit 0
           fi
+          # An earlier run may already have handled this issue in its sweep.
+          [ -n "$RESULTS" ] && [ "$RESULTS" != "[]" ] || exit 0
           printf '%s' "$RESULTS" | jq -c '.[]' | while read -r r; do
             n=$(jq -r .number <<<"$r"); status=$(jq -r .status <<<"$r")
             msg=$(jq -r .message <<<"$r"); src=$(jq -r .source_url <<<"$r")
