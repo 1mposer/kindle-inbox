@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
+  <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
+  <title>Kindle Inbox</title>
+  <updated>2026-11-07T12:56:03Z</updated>
+  <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+
+</feed>

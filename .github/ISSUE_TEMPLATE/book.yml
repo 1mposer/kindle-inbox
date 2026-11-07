@@ -1,0 +1,17 @@
+name: Send a book
+description: Find a free public-domain EPUB and send it to the Kindle inbox.
+title: "Book request"
+labels: ["book"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Book title
+      placeholder: Moby Dick
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author (optional)
+      placeholder: Herman Melville

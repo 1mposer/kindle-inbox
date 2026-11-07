@@ -1,0 +1,110 @@
+name: inbox
+
+on:
+  issues:
+    types: [opened, reopened]
+  workflow_dispatch:
+    inputs:
+      title:
+        description: Book title (and optionally author)
+        required: false
+  push:
+    branches: [main]
+    paths: ["manifest.json", "books/**", "scripts/**", ".github/workflows/inbox.yml"]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: inbox
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    # Only the repository owner can put books on the Kindle.
+    if: github.event_name != 'issues' || github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.add.outputs.status }}
+      message: ${{ steps.add.outputs.message }}
+      source_url: ${{ steps.add.outputs.source_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find and add the book
+        id: add
+        if: github.event_name != 'push'
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          INPUT_TITLE: ${{ github.event.inputs.title }}
+        run: |
+          if [ -n "$INPUT_TITLE" ]; then
+            request="$INPUT_TITLE"
+          elif printf '%s' "$ISSUE_BODY" | grep -qi '### Book title'; then
+            request="$ISSUE_BODY"
+          else
+            request="$ISSUE_TITLE"
+          fi
+          python3 -I scripts/fetch_book.py add "$request"
+      - name: Rebuild feeds
+        if: github.event_name == 'push'
+        run: python3 -I scripts/fetch_book.py build
+      - name: Commit
+        run: |
+          git config user.name "kindle-inbox"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A books manifest.json opds.xml index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "inbox: ${{ steps.add.outputs.status || 'rebuild' }}"
+            git push
+          fi
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r books manifest.json opds.xml index.html _site/ 2>/dev/null || true
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: fetch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  report:
+    needs: [fetch, deploy]
+    if: always() && github.event_name == 'issues' && needs.fetch.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment and close
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          STATUS: ${{ needs.fetch.outputs.status }}
+          MESSAGE: ${{ needs.fetch.outputs.message }}
+          SOURCE: ${{ needs.fetch.outputs.source_url }}
+          DEPLOY: ${{ needs.deploy.result }}
+        run: |
+          case "$STATUS" in
+            added)     body="$MESSAGE"$'\n\n'"Source: $SOURCE"$'\n\n'"It will download to the Kindle's Inbox shelf the next time the Kindle wakes up on Wi-Fi.";;
+            duplicate) body="$MESSAGE";;
+            "")        body="Something went wrong. See the workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}";;
+            *)         body="$MESSAGE"$'\n\n'"Try the exact title, or add the author.";;
+          esac
+          if [ "$DEPLOY" != "success" ] && [ "$STATUS" = "added" ]; then
+            body="$body"$'\n\n'"(The feed did not deploy; it will go out with the next request.)"
+          fi
+          gh issue comment "$NUMBER" --repo "$REPO" --body "$body"
+          if [ "$STATUS" = "added" ] || [ "$STATUS" = "duplicate" ]; then
+            gh issue close "$NUMBER" --repo "$REPO" --reason completed
+          fi
