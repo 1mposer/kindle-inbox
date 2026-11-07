@@ -1,1 +1,17 @@
-{"version": 1, "books": []}
+{
+  "version": 1,
+  "books": [
+    {
+      "id": "se:alexandre-dumas/the-count-of-monte-cristo/chapman-and-hall",
+      "title": "The Count of Monte Cristo",
+      "author": "Alexandre Dumas",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/alexandre-dumas/the-count-of-monte-cristo/chapman-and-hall",
+      "file": "books/alexandre-dumas_the-count-of-monte-cristo.epub",
+      "size": 1657159,
+      "added": "2026-11-07T12:59:40Z",
+      "request": "The Count of Monte Cristo"
+    }
+  ],
+  "updated": "2026-11-07T12:59:40Z"
+}
