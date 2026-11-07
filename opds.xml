@@ -2,8 +2,31 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-07T13:12:36Z</updated>
+  <updated>2026-11-07T13:13:23Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
-
+  <entry>
+    <title>Pride and Prejudice</title>
+    <id>urn:kindle-inbox:se:jane-austen/pride-and-prejudice</id>
+    <updated>2026-11-07T13:13:23Z</updated>
+    <author><name>Jane Austen</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/jane-austen/pride-and-prejudice</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/jane-austen_pride-and-prejudice.epub"/>
+  </entry>
+  <entry>
+    <title>Dracula</title>
+    <id>urn:kindle-inbox:se:bram-stoker/dracula</id>
+    <updated>2026-11-07T13:13:22Z</updated>
+    <author><name>Bram Stoker</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/bram-stoker/dracula</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/bram-stoker_dracula.epub"/>
+  </entry>
+  <entry>
+    <title>Walden</title>
+    <id>urn:kindle-inbox:se:henry-david-thoreau/walden</id>
+    <updated>2026-11-07T13:13:21Z</updated>
+    <author><name>Henry David Thoreau</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/henry-david-thoreau/walden</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/henry-david-thoreau_walden.epub"/>
+  </entry>
 </feed>

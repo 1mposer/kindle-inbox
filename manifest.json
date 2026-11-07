@@ -1,1 +1,39 @@
-{"version": 1, "books": []}
+{
+  "version": 1,
+  "books": [
+    {
+      "id": "se:henry-david-thoreau/walden",
+      "title": "Walden",
+      "author": "Henry David Thoreau",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/henry-david-thoreau/walden",
+      "file": "books/henry-david-thoreau_walden.epub",
+      "size": 997164,
+      "added": "2026-11-07T13:13:21Z",
+      "request": "Walden"
+    },
+    {
+      "id": "se:bram-stoker/dracula",
+      "title": "Dracula",
+      "author": "Bram Stoker",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/bram-stoker/dracula",
+      "file": "books/bram-stoker_dracula.epub",
+      "size": 633843,
+      "added": "2026-11-07T13:13:22Z",
+      "request": "Dracula"
+    },
+    {
+      "id": "se:jane-austen/pride-and-prejudice",
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/jane-austen/pride-and-prejudice",
+      "file": "books/jane-austen_pride-and-prejudice.epub",
+      "size": 831959,
+      "added": "2026-11-07T13:13:23Z",
+      "request": "Pride and Prejudice"
+    }
+  ],
+  "updated": "2026-11-07T13:13:23Z"
+}
