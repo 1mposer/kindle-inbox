@@ -2,9 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-07T12:59:40Z</updated>
+  <updated>2026-11-07T13:01:39Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <entry>
+    <title>Autobiography of Andrew Carnegie</title>
+    <id>urn:kindle-inbox:pg:17976</id>
+    <updated>2026-11-07T13:01:39Z</updated>
+    <author><name>Andrew Carnegie</name></author>
+    <summary>From gutenberg: https://www.gutenberg.org/ebooks/17976</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/andrew-carnegie_autobiography-of-andrew-carnegie.epub"/>
+  </entry>
   <entry>
     <title>The Count of Monte Cristo</title>
     <id>urn:kindle-inbox:se:alexandre-dumas/the-count-of-monte-cristo/chapman-and-hall</id>

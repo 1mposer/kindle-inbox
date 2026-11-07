@@ -11,7 +11,18 @@
       "size": 1657159,
       "added": "2026-11-07T12:59:40Z",
       "request": "The Count of Monte Cristo"
+    },
+    {
+      "id": "pg:17976",
+      "title": "Autobiography of Andrew Carnegie",
+      "author": "Andrew Carnegie",
+      "source": "gutenberg",
+      "source_url": "https://www.gutenberg.org/ebooks/17976",
+      "file": "books/andrew-carnegie_autobiography-of-andrew-carnegie.epub",
+      "size": 1206096,
+      "added": "2026-11-07T13:01:39Z",
+      "request": "Autobiography of Andrew Carnegie"
     }
   ],
-  "updated": "2026-11-07T12:59:40Z"
+  "updated": "2026-11-07T13:01:39Z"
 }
