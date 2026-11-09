@@ -11,7 +11,18 @@
       "size": 634177,
       "added": "2026-11-07T19:44:14Z",
       "request": "The Picture of Dorian Gray"
+    },
+    {
+      "id": "pg:2591",
+      "title": "Grimms' Fairy Tales",
+      "author": "Jacob Grimm and Wilhelm Grimm",
+      "source": "gutenberg",
+      "source_url": "https://www.gutenberg.org/ebooks/2591",
+      "file": "books/jacob-grimm-and-wilhelm-grimm_grimms-fairy-tales.epub",
+      "size": 531098,
+      "added": "2026-11-09T12:55:47Z",
+      "request": "grimms' fairy tales jacob grimm"
     }
   ],
-  "updated": "2026-11-07T19:44:14Z"
+  "updated": "2026-11-09T12:55:47Z"
 }
