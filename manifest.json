@@ -22,7 +22,18 @@
       "size": 531098,
       "added": "2026-11-09T12:55:47Z",
       "request": "grimms' fairy tales jacob grimm"
+    },
+    {
+      "id": "se:alexandre-dumas/twenty-years-after/estes-and-lauriat",
+      "title": "Twenty Years After",
+      "author": "Alexandre Dumas",
+      "source": "standardebooks",
+      "source_url": "https://standardebooks.org/ebooks/alexandre-dumas/twenty-years-after/estes-and-lauriat",
+      "file": "books/alexandre-dumas_twenty-years-after.epub",
+      "size": 1133201,
+      "added": "2026-11-09T13:03:00Z",
+      "request": "twenty years after"
     }
   ],
-  "updated": "2026-11-09T12:55:47Z"
+  "updated": "2026-11-09T13:03:00Z"
 }

@@ -2,9 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-09T12:55:47Z</updated>
+  <updated>2026-11-09T13:03:00Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <entry>
+    <title>Twenty Years After</title>
+    <id>urn:kindle-inbox:se:alexandre-dumas/twenty-years-after/estes-and-lauriat</id>
+    <updated>2026-11-09T13:03:00Z</updated>
+    <author><name>Alexandre Dumas</name></author>
+    <summary>From standardebooks: https://standardebooks.org/ebooks/alexandre-dumas/twenty-years-after/estes-and-lauriat</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="https://1mposer.github.io/kindle-inbox/books/alexandre-dumas_twenty-years-after.epub"/>
+  </entry>
   <entry>
     <title>Grimms' Fairy Tales</title>
     <id>urn:kindle-inbox:pg:2591</id>
