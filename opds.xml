@@ -2,9 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
   <id>urn:kindle-inbox:https://1mposer.github.io/kindle-inbox</id>
   <title>Kindle Inbox</title>
-  <updated>2026-11-09T13:03:00Z</updated>
+  <updated>2026-11-19T06:14:27Z</updated>
   <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
   <link rel="start" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href="https://1mposer.github.io/kindle-inbox/opds.xml"/>
+  <entry>
+    <title>Advanced Programming in the UNIX enviroment</title>
+    <id>urn:kindle-inbox:pdf:a3960d9caa297e5b</id>
+    <updated>2026-11-19T06:14:27Z</updated>
+    <author><name>Unknown</name></author>
+    <summary>From upload: https://github.com/user-attachments/files/35069765/Advanced.Programming.in.the.UNIX.Environment.3rd.Edition.0321637739.pdf</summary>
+    <link rel="http://opds-spec.org/acquisition" type="application/pdf" href="https://1mposer.github.io/kindle-inbox/books/advanced-programming-in-the-unix-enviroment.pdf"/>
+  </entry>
   <entry>
     <title>Twenty Years After</title>
     <id>urn:kindle-inbox:se:alexandre-dumas/twenty-years-after/estes-and-lauriat</id>

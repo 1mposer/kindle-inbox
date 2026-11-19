@@ -33,7 +33,18 @@
       "size": 1133201,
       "added": "2026-11-09T13:03:00Z",
       "request": "twenty years after"
+    },
+    {
+      "id": "pdf:a3960d9caa297e5b",
+      "title": "Advanced Programming in the UNIX enviroment",
+      "author": "Unknown",
+      "source": "upload",
+      "source_url": "https://github.com/user-attachments/files/35069765/Advanced.Programming.in.the.UNIX.Environment.3rd.Edition.0321637739.pdf",
+      "file": "books/advanced-programming-in-the-unix-enviroment.pdf",
+      "size": 20599339,
+      "added": "2026-11-19T06:14:27Z",
+      "request": "Advanced Programming in the UNIX enviroment"
     }
   ],
-  "updated": "2026-11-09T13:03:00Z"
+  "updated": "2026-11-19T06:14:27Z"
 }
