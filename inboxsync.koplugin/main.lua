@@ -194,7 +194,7 @@ local function safeName(s)
     s = tostring(s or ""):match("([^/]+)$") or ""
     s = s:gsub("[^%w%-_%.]", "_")
     if s == "" or s:sub(1, 1) == "." then return nil end
-    if not s:lower():match("%.epub$") then s = s .. ".epub" end
+    if not (s:lower():match("%.epub$") or s:lower():match("%.pdf$")) then s = s .. ".epub" end
     return s
 end
 
@@ -258,7 +258,12 @@ function InboxSync:_sync(interactive)
                     if c == 200 then
                         local rf = io.open(part, "rb")
                         if rf then
-                            good = rf:read(2) == "PK"
+                            local head = rf:read(5)
+                            if p.name:lower():match("%.pdf$") then
+                                good = head == "%PDF-"
+                            else
+                                good = head ~= nil and head:sub(1, 2) == "PK"
+                            end
                             rf:close()
                         end
                     end

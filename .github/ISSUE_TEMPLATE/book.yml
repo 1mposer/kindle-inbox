@@ -1,5 +1,5 @@
 name: Send a book
-description: Find a free public-domain EPUB and send it to the Kindle inbox.
+description: Find a free public-domain EPUB, or send your own PDF, to the Kindle inbox.
 title: "Book request"
 labels: ["book"]
 body:
@@ -15,3 +15,8 @@ body:
     attributes:
       label: Author (optional)
       placeholder: Herman Melville
+  - type: textarea
+    id: pdf
+    attributes:
+      label: PDF (optional)
+      description: Drag a PDF here (up to 25 MB) to send it as-is instead of searching. The repository is public, so anyone can download it.

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Find a free, legal EPUB for a book request and add it to the inbox.
 
+A request can also carry a PDF attached to the issue; that file is added as-is.
+
 Sources, in order of preference:
   1. Standard Ebooks (standardebooks.org) - carefully produced public-domain editions
   2. Project Gutenberg, through its own OPDS search
@@ -14,6 +16,7 @@ Usage:
 Standard library only. Writes a short result summary to $GITHUB_OUTPUT when set.
 """
 import datetime as dt
+import hashlib
 import html
 import json
 import os
@@ -87,6 +90,58 @@ def parse_request(text):
     text = re.sub(r"^(book|add|send|get)\s*[:\-]\s*", "", text, flags=re.I)
     text = text.replace(" by ", " ")
     return re.sub(r"\s+", " ", text).strip()[:200]
+
+
+PDF_URL = re.compile(r"https://github\.com/user-attachments/files/\d+/[^\s)\]>\"']+?\.pdf", re.I)
+
+
+def find_pdf_url(body):
+    """The PDF a request carries, if any. Only GitHub issue attachments are trusted."""
+    m = PDF_URL.search(body or "")
+    return m.group(0) if m else None
+
+
+def form_field(body, label):
+    m = re.search(r"###\s*" + label + r"[^\n]*\n+(.+?)(?:\n###|\Z)", body or "", re.S | re.I)
+    v = m.group(1).strip() if m else ""
+    return "" if v == "_No response_" else v
+
+
+def add_pdf(url, request_text):
+    """Add a PDF attached to an issue. It is kept as a PDF and not checked against any source."""
+    body = request_text
+    title = form_field(body, "Book title") or (body if "###" not in body else "")
+    author = form_field(body, "Author")
+    name = urllib.parse.unquote(url.rsplit("/", 1)[-1])
+    title = re.sub(r"\s+", " ", PDF_URL.sub("", title)).strip()[:200] or re.sub(r"\.pdf$", "", name, flags=re.I)
+    data = get(url, binary=True)
+    if data[:5] != b"%PDF-":
+        return {"status": "error", "message": "The attached file was not a PDF.", "query": title}
+    book_id = "pdf:" + hashlib.sha256(data).hexdigest()[:16]
+    m = load_manifest()
+    for b in m["books"]:
+        if b["id"] == book_id:
+            return {"status": "duplicate", "message": f'"{b["title"]}" is already in the inbox.',
+                    "query": title, "book": b}
+    fname = f"{slugify(author, 30) + '_' if author else ''}{slugify(title)}.pdf"
+    os.makedirs(BOOKS_DIR, exist_ok=True)
+    with open(os.path.join(BOOKS_DIR, fname), "wb") as f:
+        f.write(data)
+    book = {
+        "id": book_id,
+        "title": title,
+        "author": author or "Unknown",
+        "source": "upload",
+        "source_url": url,
+        "file": f"books/{fname}",
+        "size": len(data),
+        "added": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "request": title,
+    }
+    m["books"].append(book)
+    save_manifest(m)
+    build()
+    return {"status": "added", "message": f'Added PDF "{title}".', "query": title, "book": book}
 
 
 def search_standard_ebooks(query):
@@ -247,7 +302,7 @@ def build():
     <updated>{b['added']}</updated>
     <author><name>{escape(b['author'])}</name></author>
     <summary>From {escape(b['source'])}: {escape(b['source_url'])}</summary>
-    <link rel="http://opds-spec.org/acquisition" type="application/epub+zip" href="{escape(base + '/' + b['file'])}"/>
+    <link rel="http://opds-spec.org/acquisition" type="{'application/pdf' if b['file'].lower().endswith('.pdf') else 'application/epub+zip'}" href="{escape(base + '/' + b['file'])}"/>
   </entry>""")
     opds = f"""<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opds="http://opds-spec.org/2010/catalog">
@@ -270,7 +325,7 @@ def build():
 <style>body{{font:16px/1.5 Georgia,serif;max-width:40rem;margin:2rem auto;padding:0 1rem;color:#222;background:#fff}}
 li{{margin:.4rem 0}} span{{color:#666;font-size:.9em}} a{{color:#222}}</style></head>
 <body><h1>Kindle Inbox</h1>
-<p>Public-domain books on their way to a Kindle. Feeds: <a href="opds.xml">OPDS</a>, <a href="manifest.json">JSON</a>.</p>
+<p>Books on their way to a Kindle. Feeds: <a href="opds.xml">OPDS</a>, <a href="manifest.json">JSON</a>.</p>
 <ul>
 {rows}
 </ul></body></html>
@@ -291,7 +346,8 @@ def sweep(issues_path):
     results = []
     for issue in sorted(issues, key=lambda i: i["number"]):
         try:
-            r = add(request_text(issue))
+            pdf = find_pdf_url(issue.get("body"))
+            r = add_pdf(pdf, request_text(issue)) if pdf else add(request_text(issue))
         except Exception as e:  # network trouble etc.: leave the issue open for the next run
             r = {"status": "error", "message": f"Temporary error: {e}. Reopen or send again to retry."}
         results.append({

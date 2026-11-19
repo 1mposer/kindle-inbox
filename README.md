@@ -13,6 +13,11 @@ From the GitHub app or a browser, open
 [New issue > Send a book](https://github.com/1mposer/kindle-inbox/issues/new?template=book.yml),
 type the title, submit. A plain issue whose title is the book title also works.
 
+To send your own PDF instead, drag it into the **PDF** box on the form (up to
+25 MB). It is added as-is under the title you typed, with no search. The
+repository and its Pages site are public, so anyone can download an attached PDF;
+only send files you are happy to share.
+
 The Action replies on the issue within about a minute and closes it. Only the
 repository owner's issues are processed. If a source is down, the issue stays
 open and the next request retries it.
